@@ -4,7 +4,7 @@ pipeline {
     environment {
         APP_REPO = 'https://github.com/a1dellahi/covoiti-back.git'
         BRANCH = 'develop'
-        GIT_CREDENTIALS = 'github-coivoiti-pat'
+        GIT_CREDENTIALS = 'gitHub-covoiti-pat'
     }
 
     tools {
