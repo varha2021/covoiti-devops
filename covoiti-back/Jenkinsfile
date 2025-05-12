@@ -2,9 +2,13 @@ pipeline {
     agent any
     
     stages {
-
+       stage {
+          steps {
+            
+          }
+       }
     }
-    
+
     post {
         success {
             echo 'Build and tests succeeded!'
