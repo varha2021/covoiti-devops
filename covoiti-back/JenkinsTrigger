@@ -1,0 +1,26 @@
+pipeline {
+  agent any
+
+  stages {
+      stage('Checkout covoiti-back repo') {
+          steps {
+            checkout([$class: 'GitSCM',
+              branches: [[name: '*/develop']],
+              userRemoteConfigs: [[
+                  url: 'https://github.com/a1dellahi/covoiti-back.git',
+                  credentialsId: 'gitHub-covoiti-pat']]
+            ])
+          }
+      }
+  
+    stage('Trigger covoiti-back-dev job') {
+      when {
+        changeset "**"
+      }
+      
+      steps {
+        build job: 'covoiti-back-dev'
+      }
+    }
+  }
+}
