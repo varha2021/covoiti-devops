@@ -21,31 +21,41 @@ pipeline {
 
         stage('Build with Maven') {
             steps {
-                sh 'mvn clean install-DskipTests=true'
+                dir('covoiti-back') {
+                    sh 'mvn clean install -DskipTests=true'
+                }
             }
         }
 
         stage('Run Unit Tests') {
             steps {
-                sh 'mvn test'
+                dir('covoiti-back') {
+                    sh 'mvn test'
+                }
             }
         }
 
         stage('Package App') {
             steps {
-                sh 'mvn package'
+                dir('covoiti-back') {
+                    sh 'mvn package'
+                }
             }
         }
 
         stage('Build image') {
             steps {
-                sh 'echo "Deploying app..."'
+                dir('covoiti-back') {
+                    sh 'echo "Deploying app..."'
+                }
             }
         }
 
         stage('Deploy on k8s') {
             steps {
-                sh 'echo "Deploy app..."'
+                dir('covoiti-back') {
+                    sh 'echo "Deploy app..."'
+                }
             }
         }
 
