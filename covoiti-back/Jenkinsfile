@@ -6,7 +6,7 @@ pipeline {
     stages {
         
     environment {
-        APP_REPO = 'https://github.com/a1dellahi/covoiti-devops.git'
+        APP_REPO = 'https://github.com/varha2021/covoiti-devops.git'
         BRANCH = 'develop'
         GIT_CREDENTIALS = 'gitHub-covoiti-pat'
     }
