@@ -1,9 +1,6 @@
 pipeline {
     agent any
 
-
-
-    stages {
         
     environment {
         APP_REPO = 'https://github.com/varha2021/covoiti-devops.git'
@@ -63,5 +60,4 @@ pipeline {
         }
 
     }
-}
 }
