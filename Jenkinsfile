@@ -1,0 +1,67 @@
+pipeline {
+    agent any
+
+
+
+    stages {
+        
+    environment {
+        APP_REPO = 'https://github.com/varha2021/covoiti-devops.git'
+        BRANCH = 'develop'
+        GIT_CREDENTIALS = 'gitHub-covoiti-pat'
+    }
+
+    tools {
+        maven 'Maven-3.9.9'
+    }
+
+    stages {
+        stage('Checkout App Code') {
+            steps {
+                git credentialsId: "${GIT_CREDENTIALS}", url: "${APP_REPO}", branch: "${BRANCH}"
+            }
+        }
+
+        stage('Build with Maven') {
+            steps {
+                sh 'mvn clean install-DskipTests=true'
+            }
+        }
+
+        stage('Run Unit Tests') {
+            steps {
+                sh 'mvn test'
+            }
+        }
+
+        stage('Package App') {
+            steps {
+                sh 'mvn package'
+            }
+        }
+
+        stage('Build image') {
+            steps {
+                sh 'echo "Deploying app..."'
+            }
+        }
+
+        stage('Deploy on k8s') {
+            steps {
+                sh 'echo "Deploy app..."'
+            }
+        }
+
+    }
+
+    post {
+        success {
+            echo 'Pipeline completed successfully!'
+        }
+        failure {
+            echo 'Build or test failed.'
+        }
+
+    }
+}
+}
