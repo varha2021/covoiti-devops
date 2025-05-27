@@ -1,7 +1,6 @@
 pipeline {
     agent any
 
-        
     environment {
         APP_REPO = 'https://github.com/varha2021/covoiti-devops.git'
         BRANCH = 'develop'
@@ -9,13 +8,20 @@ pipeline {
     }
 
     tools {
-        maven 'Maven-3.9.9'
+        maven 'Maven-3.9.9' // Ensure this matches your Jenkins Maven tool name
     }
 
     stages {
         stage('Checkout App Code') {
             steps {
-                git credentialsId: "${GIT_CREDENTIALS}", url: "${APP_REPO}", branch: "${BRANCH}"
+                checkout([
+                    $class: 'GitSCM',
+                    branches: [[name: "${BRANCH}"]],
+                    userRemoteConfigs: [[
+                        url: "${APP_REPO}",
+                        credentialsId: "${GIT_CREDENTIALS}"
+                    ]]
+                ])
             }
         }
 
@@ -38,27 +44,26 @@ pipeline {
         stage('Package App') {
             steps {
                 dir('covoiti-back') {
-                    sh 'mvn package'
+                    sh 'mvn package -DskipTests=true'
                 }
             }
         }
 
-        stage('Build image') {
+        stage('Build Docker Image') {
             steps {
                 dir('covoiti-back') {
-                    sh 'echo "Deploying app..."'
+                    sh 'docker build -t covoiti-back:latest .'
                 }
             }
         }
 
-        stage('Deploy on k8s') {
+        stage('Deploy to Kubernetes') {
             steps {
-                dir('covoiti-back') {
-                    sh 'echo "Deploy app..."'
+                dir('covoiti-back/k8s') {
+                    sh 'kubectl apply -f .'
                 }
             }
         }
-
     }
 
     post {
@@ -68,6 +73,5 @@ pipeline {
         failure {
             echo 'Build or test failed.'
         }
-
     }
 }
