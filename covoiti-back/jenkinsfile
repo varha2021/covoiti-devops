@@ -3,9 +3,9 @@ pipeline {
 
 
     stages {
-        stage {
+        stage('test') {
             steps {
-                
+
             }
         }
     }
