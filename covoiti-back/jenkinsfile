@@ -3,7 +3,11 @@ pipeline {
 
 
     stages {
-        
+        stage {
+            steps {
+                
+            }
+        }
     }
 
     post {
